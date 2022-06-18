@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GraphSolver</title>
+    <link rel="stylesheet" href = "style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/lib/arbor.js"></script>
+    <script src="/lib/graphics.js"></script>
+    <script src="/lib/renderer.js"></script>
+    <script src="/lib/arbor-tween.js"></script>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b0b7c577-941a-496d-a656-32c5732d82ff/d676ife-5ce481e4-9a57-40ca-8dbc-b67a78fed490.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTpmaWxlLmRvd25sb2FkIl0sIm9iaiI6W1t7InBhdGgiOiIvZi9iMGI3YzU3Ny05NDFhLTQ5NmQtYTY1Ni0zMmM1NzMyZDgyZmYvZDY3NmlmZS01Y2U0ODFlNC05YTU3LTQwY2EtOGRiYy1iNjdhNzhmZWQ0OTAuZ2lmIn1dXX0.d89DEDmSf7O5iq6sjsHU-VGZoCcFe--SX3usSSrRsJo); /* Путь к фоновому изображению */
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <div class="numbertext">1/2</div>
+            <div class="rectangle" id="mainRec" style="border-radius: 5%">
+                <div id="projetName">Приложение для визуализации
+                    алгоритма поиска мостов и точек
+                    сочленения в графе</div>
+                <div style="height: 75%; width: 40%; position: absolute; left: 5%; margin-top: 7%">
+                    <h1 style="color: white"> Определение "Мосты"</h1>
+                    <p style="color: #43bec0; font-size: 20px">Пусть дан неориентированный граф. Мостом называется такое ребро, удаление которого делает граф несвязным (или, точнее, увеличивает число компонент связности). Требуется найти все мосты в заданном графе.
+                        Неформально, эта задача ставится следующим образом: требуется найти на карте такие дороги, при удалении которых пропадает путь между какими-либо двумя точками.</p>
+                    <h1 style="color: white"> Идея "Мосты"</h1>
+                    <p style="color: #43bec0; font-size: 20px">Мы можем заметить тот факт, что ребро между точками v и u является мостом тогда и только тогда, когда из вершины u и её потомков нельзя вернуться в вершину v или подняться выше нее. Осталось лишь понять, как нам это выяснить.</p>
+                    <h1 style="color: white"> Определение "Точки сочленения"</h1>
+                    <p style="color: #43bec0; font-size: 20px">Точкой сочленения называется вершина, удаление которой делает граф несвязным.</p>
+                    <h1 style="color: white"> Идея "Точки сочленения"</h1>
+                    <p style="color: #43bec0; font-size: 20px">Мы можем заметить два факта:
+                        Рассмотрим ребро между вершинами v и u. Тогда если из вершины u и ее потомков нельзя попасть в какого-либо предка вершины v и притом вершина v не является корнем дерева, то данная вершина и есть точка сочленения
+                        Если вершина v - корень дерева, то она является точкой сочленения тогда и только тогда, когда эта точка имеет более одного сына в обходе графа в глубину</p>
+                </div>
+                <div style="height: 75%; width: 40%; position: absolute; left: 55%; margin-top: 7%">
+                    <img style="margin-top: 22%; height: 55%; width: 100%" src="/img/img.png">
+                    <p style="color: #a052b7; font-size: 20px; position: absolute; top: 75%"> Для построения графа нажмите стрелочку вправо, чтобы перейти на следующую страницу.</p>
+                </div>
+
+                <div class="text" style="font-size: 25px">Общая информация</div>
+            </div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">2/2</div>
+            <div class="rectangle" style="background: #0e2425; border-radius: 2%">
+                <div class="canvasCont">
+                    <div class="canvas">
+<!--                        <canvas id="viewport" height="540" width="765"></canvas>-->
+                        <canvas id="viewport" height="810" width="1147"></canvas>
+                        <script src="graphMaker.js"></script>
+
+                    </div>
+                </div>
+                <div class="tools" style="border-radius: 5%">
+                    <div style="text-align: center; color: white; padding-top: 10px">Инструменты для построения графа</div>
+                    <hr>
+                    <div class="toolBlock" style="height: 10%">
+                        <div class="pointTool" style="cursor: pointer"></div>
+                        <div class="toolText">Node</div>
+<!--                        <input type="text" id="dotInput" placeholder="enter Node number" style="margin-top: 25px; width: 120px; cursor: pointer">-->
+                        <button onclick="createDot()" style="width: 128px; cursor: pointer ;margin-top: 25px">CreateDot</button>
+                        <button onclick="deleteDot()" style="width: 128px; cursor: pointer">DeleteDot</button>
+                        <input type="text" id="dotInput" placeholder="Delete Node number" style="width: 120px; cursor: pointer">
+                    </div>
+                    <hr>
+                    <div class="toolBlock">
+                        <div class="edgeTool" style="cursor: pointer"></div>
+                        <div class="toolText">Edge</div>
+                        <select id="select1dot" style="margin-top: 25px; width: 128px; cursor: pointer"></select>
+                        <select id="select2dot" style="width: 128px; cursor: pointer"></select>
+                        <button onclick="createEdge()" style="width: 128px; cursor: pointer">CreateEdge</button>
+                        <button onclick="deleteEdge()" style="width: 128px; cursor: pointer">DeleteEdge</button>
+                    </div>
+                    <hr>
+                    <div class="toolBlock" style="height: 8%">
+                        <div class="toolText" style="text-align: left">graphSolver</div>
+                        <button onclick="findBridges()" style="width: 128px; cursor: pointer; margin-top: 25px">FindBridges</button>
+                        <button onclick="findAP()" style="width: 128px; cursor: pointer">FindAPs</button>
+                    </div>
+                    <hr>
+                    <div class="toolBlock" style="color: #f2f2f2; font-size: 20px; text-align: center; height: 16%">
+                        <div style="text-align: center">graphGeneration</div>
+                        <input type="text" id="nInput" placeholder="nodes count" style="margin-top: 6px; width: 120px; cursor: pointer;">
+                        <input type="text" id="eInput" placeholder="edges count" style="width: 120px; cursor: pointer">
+                        <button onclick="generateGraph()" style="width: 128px; cursor: pointer">genGraph</button>
+                        <select id="ownGraphSelect" style="width: 128px; cursor: pointer"></select>
+                        <button onclick="generateOwn()" style="width: 128px; cursor: pointer">developer'sGraph</button>
+                    </div>
+                    <hr>
+                    <div class="toolBlock" id="divBlockMap2" style="color: #f2f2f2; font-size: 20px; text-align: center; height: 10%; visibility: hidden">
+                        <div style="text-align: center">BridgesSolveMap</div>
+                        <button onclick="showSolveMap2(1)" style="width: 128px; cursor: pointer; margin-top: 6px">NextStep</button>
+                        <button onclick="showSolveMap2(-1)" style="width: 128px; cursor: pointer">PrevStep</button>
+                        <div id="showIt2">0</div>
+                    </div>
+                    <hr>
+                    <div class="toolBlock" id="divBlockMap" style="color: #f2f2f2; font-size: 20px; text-align: center; height: 10%; visibility: hidden">
+                        <div style="text-align: center">APsSolveMap</div>
+                        <button onclick="showSolveMap(1)" style="width: 128px; cursor: pointer; margin-top: 6px">NextStep</button>
+                        <button onclick="showSolveMap(-1)" style="width: 128px; cursor: pointer">PrevStep</button>
+                        <div id="showIt">0</div>
+                    </div>
+                    <hr>
+                    <div class="toolBlock" style="font-size: 20px; text-align: center; height: 3%;position: absolute; bottom: 1%">
+                        <button id="myBtn">Help</button>
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <p class="p1" id="p1">Модальное окно!</p>
+                            </div>
+                        </div>
+                        <script src="help.js"></script>
+                    </div>
+
+                </div>
+
+<!--                <div class="text">Форма для графа</div>-->
+            </div>
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094</a>
+        <a class="next" onclick="plusSlides(1)">&#10095</a>
+    </div>
+    <br>
+
+    <div class="circles">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+
+    <script src="siteMaker.js"></script>
+</body>
+</html>
